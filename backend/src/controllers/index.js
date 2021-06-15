@@ -1,3 +1,4 @@
 const StatusCheckController = require("./StatusCheckController");
+const UserController = require("./UserController");
 
-module.exports = { StatusCheckController };
+module.exports = { StatusCheckController, UserController };
