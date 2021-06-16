@@ -38,6 +38,18 @@ class UserController {
 
     return res.status(200).json({ message: "User registered", data: newUser });
   }
+
+  async profile(req, res) {
+    const { id } = req.query;
+
+    const userExists = await UserModel.findOne({ _id: id }, { password: false });
+
+    if (!userExists) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ message: "User's profile", data: userExists });
+  }
 }
 
 module.exports = UserController;
