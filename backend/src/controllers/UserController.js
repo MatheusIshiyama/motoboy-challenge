@@ -1,7 +1,8 @@
 const { UserModel } = require("../models");
-const { PasswordHash } = require("../utils");
+const { PasswordHash, Token } = require("../utils");
 
 const { hash, compare } = PasswordHash;
+const {validateToken} = Token
 
 async function emailIsAvailable(email) {
   const emailIsTaken = await UserModel.findOne({ email });
@@ -40,9 +41,13 @@ class UserController {
   }
 
   async profile(req, res) {
-    const { id } = req.query;
+    const { authorization } = req.headers;
 
-    const userExists = await UserModel.findOne({ _id: id }, { password: false });
+    const [,token] = authorization.split(' ');
+    
+    const user = await validateToken(token);
+
+    const userExists = await UserModel.findOne({ _id: user.id }, { password: false });
 
     if (!userExists) {
       return res.status(404).json({ message: "User not found" });
