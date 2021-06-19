@@ -1,4 +1,4 @@
 const PasswordHash = require("./passwordHash");
-const GenerateToken = require("./generateToken");
+const Token = require("./token");
 
-module.exports = { PasswordHash, GenerateToken };
+module.exports = { PasswordHash, Token };

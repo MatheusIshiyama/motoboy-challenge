@@ -1,8 +1,8 @@
 const { UserModel } = require("../models");
-const { PasswordHash, GenerateToken } = require("../utils");
+const { PasswordHash, Token } = require("../utils");
 
 const { compare } = PasswordHash;
-const { generateToken } = GenerateToken;
+const { generateToken } = Token;
 
 class SignUpController {
   async signUp(req, res) {
