@@ -1,4 +1,4 @@
-# motoboy-challenge
+# motoboy challenge
 
 ---
 
