@@ -4,8 +4,8 @@ const { PasswordHash, Token } = require("../utils");
 const { compare } = PasswordHash;
 const { generateToken } = Token;
 
-class SignUpController {
-  async signUp(req, res) {
+class SignInController {
+  async sign(req, res) {
     const { email, password } = req.body;
 
     if (!email || !password) return res.status(400).json({ message: "Credentials not provided" });
@@ -26,4 +26,4 @@ class SignUpController {
   }
 }
 
-module.exports = SignUpController;
+module.exports = SignInController;
