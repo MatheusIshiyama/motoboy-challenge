@@ -11,7 +11,15 @@ class PurchaseController {
 
     const user = await validateToken(token);
 
-    const purchases = await PurchaseModel.find({ userId: user.id });
+    const purchases = await PurchaseModel.find({ userId: user.id })
+      .populate({
+        path: "user",
+        select: ["_id", "email"],
+      })
+      .populate({
+        path: "productId",
+        select: ["_id", "name"],
+      });
 
     res.status(200).json({ message: "Purchases founded", data: purchases });
   }
