@@ -10,17 +10,31 @@ class ProductController {
   async create(req, res) {
     const { name } = req.body;
 
-    const productExists = await ProductModel.findOne({ name });
+    const productName = name.toLowerCase();
+
+    const productExists = await ProductModel.findOne({ name: productName });
 
     if (productExists) return res.status(400).json({ message: "Product already registered" });
-    
+
     const newProduct = new ProductModel({
-      name,
+      name: productName,
     });
 
     await newProduct.save();
 
     res.status(200).json({ message: "Product registered", data: newProduct });
+  }
+
+  async findByName(req, res) {
+    const { name } = req.query;
+
+    const productName = name.toLowerCase();
+
+    const productExists = await ProductModel.findOne({ name: productName });
+
+    if (!productExists) return res.status(404).json({ message: "Product not found" });
+
+    res.status(200).json({ message: "Product founded", data: productExists });
   }
 }
 
