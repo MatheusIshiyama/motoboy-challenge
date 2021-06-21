@@ -1,6 +1,7 @@
-const StatusCheckController = require("./StatusCheckController");
-const UserController = require("./UserController");
-const SignUpController = require("./SignUpController");
-const ProductController = require("./ProductController");
-
-module.exports = { StatusCheckController, UserController, SignUpController, ProductController };
+module.exports = {
+  StatusCheckController: require("./StatusCheckController"),
+  UserController: require("./UserController"),
+  SignUpController: require("./SignUpController"),
+  ProductController: require("./ProductController"),
+  PurchaseController: require("./PurchaseController"),
+};
