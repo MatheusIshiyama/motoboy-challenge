@@ -1,14 +1,32 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+
 import styles from "../styles/login.module.scss";
 
-export default function Login() {
+export default function Login({ baseUrl }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const handleSubmit = (event) => {
+  const router = useRouter();
+  const api = axios.create({ baseURL: baseUrl });
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(email, password);
+
+    try {
+      const response = await api.post(`/api/signIn`, {
+        email,
+        password,
+      });
+
+      localStorage.setItem("token", response.data.data.token);
+      router.push("/");
+    } catch (error) {
+      alert("Invalid email or password");
+    }
   };
+
   return (
     <div className={styles.container}>
       <form className={styles.card}>
@@ -30,7 +48,16 @@ export default function Login() {
         <button type="submit" onClick={(e) => handleSubmit(e)}>
           Login
         </button>
+        <a href="/signup">New user? Register now</a>
       </form>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      baseUrl: process.env.API_URL,
+    },
+  };
 }
