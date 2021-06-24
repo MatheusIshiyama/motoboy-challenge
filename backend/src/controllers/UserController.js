@@ -2,7 +2,7 @@ const { UserModel } = require("../models");
 const { PasswordHash, Token } = require("../utils");
 
 const { hash, compare } = PasswordHash;
-const {validateToken} = Token
+const { validateToken, generateToken } = Token;
 
 async function emailIsAvailable(email) {
   const emailIsTaken = await UserModel.findOne({ email });
@@ -37,14 +37,18 @@ class UserController {
 
     await newUser.save();
 
-    return res.status(200).json({ message: "User registered", data: newUser });
+    newUser.password = undefined;
+
+    const token = await generateToken({ id: newUser._id, email: newUser.email });
+
+    return res.status(200).json({ message: "User registered", data: { ...newUser, token } });
   }
 
   async profile(req, res) {
     const { authorization } = req.headers;
 
-    const [,token] = authorization.split(' ');
-    
+    const [, token] = authorization.split(" ");
+
     const user = await validateToken(token);
 
     const userExists = await UserModel.findOne({ _id: user.id }, { password: false });
